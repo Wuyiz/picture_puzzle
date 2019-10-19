@@ -78,9 +78,9 @@ public class MainPanel extends JPanel {
             }
         }
         a[i] = total - 1;
-        System.out.printf("图片的初始顺序为：");
-        for (i = 0; i < total; i++) {
-            System.out.printf(a[i] + " ");
-        }
+//        System.out.printf("图片的初始顺序为：");
+//        for (i = 0; i < total; i++) {
+//            System.out.printf(a[i] + " ");
+//        }
     }
 }
