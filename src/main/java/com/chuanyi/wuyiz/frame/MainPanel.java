@@ -1,13 +1,12 @@
 package com.chuanyi.wuyiz.frame;
 
-import com.chuanyi.wuyiz.method.ImageUtil;
+import com.chuanyi.wuyiz.function.ImageUtil;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.IOException;
 import java.util.Random;
 
 /**
@@ -18,10 +17,10 @@ import java.util.Random;
  * @Version V1.0
  **/
 public class MainPanel extends JPanel {
-    JButton[] buttons = new JButton[25];    //Numbers of btn
+    Button[] buttons = new Button[25];    //Numbers of btn
     ImageIcon[] imageIcons = new ImageIcon[25]; //Numbers of icon
     int state[] = new int[25];  //Storage order
-    int nullBtn;    //Blank btn position
+    int blankBtn;    //blankBtn btn position
     int pattern;    //Numbers of icons
     int total;  //total of icons
 
@@ -37,7 +36,7 @@ public class MainPanel extends JPanel {
     public void breakRandom(String path, int pattern) {
         this.pattern = pattern;
         total = pattern * pattern;
-        nullBtn = total - 1;
+        blankBtn = total - 1;
 
         ImageUtil.cutImage(new File(path + "\\index.jpg"),
                 pattern, path + pattern);
@@ -49,15 +48,27 @@ public class MainPanel extends JPanel {
         random(state);
 
         for (int i = 0; i < total; i++) {
-            buttons[i] = new JButton();
+            buttons[i] = new Button();
+            buttons[i].setRow(i / pattern);
+            buttons[i].setCol(i % pattern);
             this.add(buttons[i]);
         }
 
         for (int i = 0; i < total - 1; i++) {
             imageIcons[i] = new ImageIcon(path + pattern + "\\" + state[i] + ".jpg");
             imageIcons[i].setImage(imageIcons[i].getImage().getScaledInstance(cutIcon_width,
-                    cutIcon_height,Image.SCALE_DEFAULT));
+                    cutIcon_height, Image.SCALE_DEFAULT));
             buttons[i].setIcon(imageIcons[i]);
+        }
+
+        for (int i = 0; i < total; i++) {
+            buttons[i].addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    Button button = (Button) e.getSource();
+                    remove(button);
+                }
+            });
         }
     }
 
@@ -78,9 +89,25 @@ public class MainPanel extends JPanel {
             }
         }
         a[i] = total - 1;
-//        System.out.printf("图片的初始顺序为：");
-//        for (i = 0; i < total; i++) {
-//            System.out.printf(a[i] + " ");
-//        }
+    }
+
+    //icon move function
+    public void remove(Button clicked) {
+        int row_black = buttons[blankBtn].getRow();
+        int col_black = buttons[blankBtn].getCol();
+        int row_click = clicked.getRow();
+        int col_click = clicked.getCol();
+
+        if (Math.abs(row_black - row_click) == 1 && Math.abs(col_black - col_click) == 0
+                || Math.abs(row_black - row_click) == 0 && Math.abs(col_black - col_click) == 1) {
+            ImageIcon icon = (ImageIcon) clicked.getIcon();
+            buttons[blankBtn].setIcon(icon);
+            clicked.setIcon(null);
+            int clickState = row_click * pattern + col_click;
+            blankBtn = row_black * pattern + col_black;
+            state[blankBtn] = state[clickState];
+            state[clickState] = total - 1;
+            blankBtn = clickState;
+        }
     }
 }
