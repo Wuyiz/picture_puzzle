@@ -1,4 +1,4 @@
-package com.chuanyi.wuyiz.frame;
+package com.wuyiz.frame;
 
 
 import javax.swing.*;

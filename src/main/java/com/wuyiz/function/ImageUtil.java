@@ -1,4 +1,4 @@
-package com.chuanyi.wuyiz.function;
+package com.wuyiz.function;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

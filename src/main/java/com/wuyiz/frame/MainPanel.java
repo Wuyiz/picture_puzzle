@@ -1,6 +1,6 @@
-package com.chuanyi.wuyiz.frame;
+package com.wuyiz.frame;
 
-import com.chuanyi.wuyiz.function.ImageUtil;
+import com.wuyiz.function.ImageUtil;
 
 import javax.swing.*;
 import java.awt.*;
