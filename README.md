@@ -14,14 +14,14 @@
 > 4. 时间、步数显示 
 ---
 ### 集成方式
-> **IDE**：`IntelliJ IDEA` 
-> **Language**：`java` 
-> **Development Environment**：`jdk 1.8` 
-> **Technology**：`Swing、多线程` 
+> **IDE**：`IntelliJ IDEA`  
+> **Language**：`java`  
+> **Development Environment**：`jdk 1.8`  
+> **Technology**：`Swing、多线程`  
 ---
 ### 功能对照
 |类名|功能实现|
-|---||---|
+|---|---|
 | Puzzle | 顶层容器、任务栏功能实现 |
 | MainPanel | 中间容器面板 |
 | Button | 按钮坐标 |
