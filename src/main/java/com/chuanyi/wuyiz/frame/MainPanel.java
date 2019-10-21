@@ -24,6 +24,12 @@ public class MainPanel extends JPanel {
     int pattern;    //Numbers of icons
     int total;  //total of icons
 
+    int count;
+
+    public int getCount() {
+        return count;
+    }
+
     int cutIcon_width = 220;  //cut icon size
     int cutIcon_height = 200;
 
@@ -34,6 +40,7 @@ public class MainPanel extends JPanel {
     }
 
     public void breakRandom(String path, int pattern) {
+        count = 0;
         this.pattern = pattern;
         total = pattern * pattern;
         blankBtn = total - 1;
@@ -67,6 +74,7 @@ public class MainPanel extends JPanel {
                 public void mousePressed(MouseEvent e) {
                     Button button = (Button) e.getSource();
                     remove(button);
+                    count++;
                 }
             });
         }
@@ -108,6 +116,20 @@ public class MainPanel extends JPanel {
             state[blankBtn] = state[clickState];
             state[clickState] = total - 1;
             blankBtn = clickState;
+            check();
+        } else {
+            return;
         }
     }
+
+    //check finish
+    public void check() {
+        for (int i = 0; i < total; i++) {
+            if (state[i] != i) {
+                return;
+            }
+            JOptionPane.showMessageDialog(this, "拼图成功");
+        }
+    }
+
 }

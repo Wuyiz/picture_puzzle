@@ -1,15 +1,10 @@
 package com.chuanyi.wuyiz.frame;
 
 
-import com.chuanyi.wuyiz.test.JFrameTest;
-
 import javax.swing.*;
-import javax.swing.text.AbstractDocument;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.font.LineBreakMeasurer;
-import java.beans.PropertyChangeListener;
 
 /**
  * @ClassName puzzle
@@ -18,13 +13,15 @@ import java.beans.PropertyChangeListener;
  * @Date 2019/10/16
  * @Version V1.0
  **/
-public class Puzzle extends JFrame {
+public class Puzzle extends JFrame implements Runnable {
     private MainPanel panel;
     private JMenuBar jMenuBar;
     private JMenu menu, menuSelect, menuChange, menuRank, menuHelp;
     private JMenuItem itemStart, itemExit, itemView;
-    private JRadioButtonMenuItem pic_change[] = new JRadioButtonMenuItem[4];
+    JLabel total_time, total_count;
     private JRadioButtonMenuItem game_rank[] = new JRadioButtonMenuItem[3];
+    long startTime, endTime;
+    private JRadioButtonMenuItem pic_change[] = new JRadioButtonMenuItem[3];
 
     private String path;    //Image path
     private int pattern;    //Numbers of pic
@@ -41,6 +38,11 @@ public class Puzzle extends JFrame {
         itemExit = new JCheckBoxMenuItem("退出");
         itemView = new JCheckBoxMenuItem("查看原图");
 
+        total_time = new JLabel("时间：");
+        total_count = new JLabel("步数：");
+        total_time.setForeground(Color.RED);
+        total_count.setForeground(Color.RED);
+
         //menu group
         String content;
         ButtonGroup groupChange = new ButtonGroup();
@@ -50,7 +52,8 @@ public class Puzzle extends JFrame {
             pic_change[i] = new JRadioButtonMenuItem("0" + (i + 1) + ".jpg");
             groupChange.add(pic_change[i]);
             menuChange.add(pic_change[i]);
-        }   pic_change[0].setSelected(true);
+        }
+        pic_change[2].setSelected(true);
 
         for (int i = 0; i < game_rank.length; i++) {
             if (i == 0) {
@@ -58,12 +61,14 @@ public class Puzzle extends JFrame {
             } else if (i == 1) {
                 content = "normal";
             } else {
-                content = "hard"; }
+                content = "hard";
+            }
 
             game_rank[i] = new JRadioButtonMenuItem(content);
             groupRank.add(game_rank[i]);
             menuRank.add(game_rank[i]);
-        }   game_rank[0].setSelected(true);
+        }
+        game_rank[0].setSelected(true);
 
         //menu add
         menu.add(itemStart);
@@ -74,13 +79,18 @@ public class Puzzle extends JFrame {
         jMenuBar.add(menu);
         jMenuBar.add(menuSelect);
         jMenuBar.add(menuHelp);
+        jMenuBar.add(new Label(""));
+        jMenuBar.add(total_time);
+        jMenuBar.add(new Label(" "));
+        jMenuBar.add(total_count);
+        jMenuBar.add(new Label(" "));
 
         this.setJMenuBar(jMenuBar);
 
         itemStart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                breakState();
             }
         });
 
@@ -99,7 +109,7 @@ public class Puzzle extends JFrame {
 
                 ImageIcon imageIcon = new ImageIcon(path + "\\index.jpg");
                 imageIcon.setImage(imageIcon.getImage()
-                        .getScaledInstance(model.getWidth(),model.getHeight()
+                        .getScaledInstance(model.getWidth(), model.getHeight()
                                 , Image.SCALE_DEFAULT));
                 JButton index = new JButton(imageIcon);
 
@@ -120,15 +130,29 @@ public class Puzzle extends JFrame {
 
         panel = new MainPanel(path, pattern);
 
+        startTime = System.currentTimeMillis();
         this.add(panel);
         this.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        Puzzle puzzle = new Puzzle();
+        Thread thread = new Thread(puzzle);
+        thread.start();
+    }
+
+    public void breakState() {
+        startTime = System.currentTimeMillis();
+        setPattern();
+        setPath();
+        panel.breakRandom(path, pattern);
     }
 
     public void setPath() {
 //        path = "img\\type1\\";
         for (int i = 0; i < pic_change.length; i++) {
             if (pic_change[i].isSelected()) {
-                path = "img\\type"+(i+1)+"\\";
+                path = "img\\type" + (i + 1) + "\\";
             }
         }
     }
@@ -136,7 +160,7 @@ public class Puzzle extends JFrame {
     public void setPattern() {
 //        this.pattern = pattern;
         for (int i = 0; i < game_rank.length; i++) {
-            if (pic_change[i].isSelected()) {
+            if (game_rank[i].isSelected()) {
                 switch (i) {
                     case 0:
                         pattern = 3;
@@ -152,7 +176,13 @@ public class Puzzle extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        new Puzzle();
+    @Override
+    public void run() {
+        while (true) {
+            endTime = System.currentTimeMillis(); //ms
+            int time = (int) ((endTime - startTime) / 1000);
+            total_time.setText("时间：" + time + "s");
+            total_count.setText("步数：" + panel.getCount());
+        }
     }
 }
