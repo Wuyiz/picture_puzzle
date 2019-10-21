@@ -1,4 +1,4 @@
-# 项目名称
+### 项目名称
 > picture puzzle game
 ---
 ![](https://img.shields.io/github/followers/Wuyiz?style=social)
