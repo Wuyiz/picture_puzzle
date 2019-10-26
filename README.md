@@ -4,7 +4,7 @@
 ![](https://img.shields.io/github/followers/Wuyiz?style=social)
 
 ### 项目演示
-- 总体效果
+> - 总体效果
 ![效果展示](https://github.com/Wuyiz/picture_puzzle/blob/master/img/%E6%95%88%E6%9E%9C%E5%B1%95%E7%A4%BA.jpg)
 ---
 ### 功能介绍
