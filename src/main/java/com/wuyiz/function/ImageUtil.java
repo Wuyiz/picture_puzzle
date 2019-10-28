@@ -14,11 +14,11 @@ import java.io.File;
 public class ImageUtil {
     public static boolean cutImage(File sourcePath,int cutNumber,String savePath){
         try {
-            BufferedImage image = ImageIO.read(sourcePath);
+            BufferedImage image = ImageIO.read(sourcePath);     //write the icon to buffered
 
-            int allWidth = image.getWidth();
+            int allWidth = image.getWidth();        //get the icon width & height
             int allHeight = image.getHeight();
-            int width = allWidth / cutNumber;
+            int width = allWidth / cutNumber;       //calculate the width after cutting
             int height = allHeight / cutNumber;
 
             for (int i = 0; i < cutNumber; i++){

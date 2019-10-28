@@ -14,18 +14,21 @@ import java.awt.event.ActionListener;
  * @Version V1.0
  **/
 public class Puzzle extends JFrame implements Runnable {
-    private MainPanel panel;
-    private JMenuBar jMenuBar;
-    private JMenu menu, menuSelect, menuChange, menuRank, menuHelp;
-    private JMenuItem itemStart, itemExit, itemView;
-    JLabel total_time, total_count;
-    private JRadioButtonMenuItem game_rank[] = new JRadioButtonMenuItem[3];
-    long startTime, endTime;
+    JLabel total_time, total_count;     //total time and operation count
+    long startTime, endTime;            //initial time and end time
+    private MainPanel panel;            //main panel container
+    private JMenuBar jMenuBar;          //mission board
+
+    private JMenu menu, menuSelect, menuChange, menuRank, menuHelp;     //taskbar item
+    private JMenuItem itemStart, itemExit, itemView;        //menu item: start game, exit game, view original photo
+
+    private JRadioButtonMenuItem game_rank[] = new JRadioButtonMenuItem[3];     //menu item group
     private JRadioButtonMenuItem pic_change[] = new JRadioButtonMenuItem[3];
 
     private String path;    //Image path
     private int pattern;    //Numbers of pic
 
+    //initial panel
     public Puzzle() {
         jMenuBar = new JMenuBar();
         menu = new JMenu("菜单");
@@ -43,12 +46,13 @@ public class Puzzle extends JFrame implements Runnable {
         total_time.setForeground(Color.RED);
         total_count.setForeground(Color.RED);
 
-        //menu group
+        //create menu group
         String content;
         ButtonGroup groupChange = new ButtonGroup();
         ButtonGroup groupRank = new ButtonGroup();
 
         for (int i = 0; i < pic_change.length; i++) {
+            //add image item to menu[pic_change]
             pic_change[i] = new JRadioButtonMenuItem("0" + (i + 1) + ".jpg");
             groupChange.add(pic_change[i]);
             menuChange.add(pic_change[i]);
@@ -56,6 +60,7 @@ public class Puzzle extends JFrame implements Runnable {
         pic_change[2].setSelected(true);
 
         for (int i = 0; i < game_rank.length; i++) {
+            //add  Game difficulty to menu[game_rank]
             if (i == 0) {
                 content = "easy";
             } else if (i == 1) {
@@ -142,9 +147,9 @@ public class Puzzle extends JFrame implements Runnable {
     }
 
     public void breakState() {
-        startTime = System.currentTimeMillis();
-        setPattern();
-        setPath();
+        startTime = System.currentTimeMillis();     //set initial time
+        setPattern();       //set the currently selected pattern
+        setPath();          //set the currently selected icon path
         panel.breakRandom(path, pattern);
     }
 

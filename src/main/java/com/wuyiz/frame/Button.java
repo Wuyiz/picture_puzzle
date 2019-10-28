@@ -10,8 +10,8 @@ import javax.swing.*;
  * @Version V1.0
  **/
 public class Button extends JButton {
-    int row;
-    int col;
+    int row;    //X-axis of the btn
+    int col;    //Y-axis of the btn
 
     public int getRow() {
         return row;
